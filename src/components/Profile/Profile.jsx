@@ -1,18 +1,39 @@
-import './profile.module.css';
+import PropTypes from 'prop-types';
+import ProfileList from './ProfileList/ProfileList';
+import ProfileInfo from './ProfileInfo/ProfileInfo';
+import ProfileItem from './ProfileItem/ProfileItem';
+import css from './profile.module.css';
 
-const Profile = ({ name, imgUrl, price }) => {
+const Profile = ({ data: { username, tag, location, avatar, stats } }) => {
   return (
-    <div>
-      <h2>{name}</h2>
-      <img src={imgUrl} alt={name} width="480" />
-      <p>Price: {price} credits</p>
+    <div className={css.wrapper}>
+      <ProfileInfo
+        username={username}
+        tag={tag}
+        location={location}
+        avatar={avatar}
+      />
+      <ProfileList>
+        <ProfileItem stats={stats.followers}>Followers</ProfileItem>
+        <ProfileItem stats={stats.views}>Views</ProfileItem>
+        <ProfileItem stats={stats.likes}>Likes</ProfileItem>
+      </ProfileList>
     </div>
   );
 };
 
-Profile.defaultProps = {
-  imgUrl:
-    'https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?dpr=2&h=480&w=640',
+Profile.propTypes = {
+  data: PropTypes.exact({
+    username: PropTypes.string.isRequired,
+    tag: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+    stats: PropTypes.exact({
+      followers: PropTypes.number.isRequired,
+      views: PropTypes.number.isRequired,
+      likes: PropTypes.number.isRequired,
+    }),
+  }),
 };
 
 export default Profile;
